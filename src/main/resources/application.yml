@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: kickstats
+  datasource:
+    url: jdbc:mysql://localhost:3306/kickstats?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+  jpa:
+    hibernate:
+      ddl-auto: validate   # 스키마는 db/schema.sql로 관리
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
