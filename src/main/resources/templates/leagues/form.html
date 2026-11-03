@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${leagueId} ? '리그 수정' : '리그 등록')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: nav}"></header>
+<main>
+    <div class="page-title">
+        <h1 th:text="${leagueId} ? '리그 수정' : '리그 등록'"></h1>
+    </div>
+
+    <form class="form" method="post" th:object="${leagueForm}"
+          th:action="${leagueId} ? @{/leagues/{id}(id=${leagueId})} : @{/leagues}">
+        <div class="field">
+            <label for="name">리그 이름</label>
+            <input type="text" th:field="*{name}" maxlength="50" required>
+            <p class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+        </div>
+        <div class="field">
+            <label for="country">국가</label>
+            <input type="text" th:field="*{country}" maxlength="50" required>
+            <p class="error" th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></p>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="button primary">저장</button>
+            <a class="button" th:href="@{/leagues}">취소</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

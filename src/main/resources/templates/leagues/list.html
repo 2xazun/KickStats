@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('리그')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: nav}"></header>
+<main>
+    <div class="page-title">
+        <h1>리그</h1>
+        <a class="button primary" th:href="@{/leagues/new}">리그 등록</a>
+    </div>
+    <p th:replace="~{fragments/layout :: message}"></p>
+
+    <p th:if="${leagues.isEmpty()}" class="empty">등록된 리그가 없습니다.</p>
+    <ul th:unless="${leagues.isEmpty()}" class="card-list">
+        <li th:each="league : ${leagues}" class="card-row">
+            <div>
+                <p class="card-row-title" th:text="${league.name}"></p>
+                <p class="card-row-subtitle" th:text="${league.country}"></p>
+            </div>
+            <div class="actions">
+                <a class="button" th:href="@{/leagues/{id}/edit(id=${league.leagueId})}">수정</a>
+                <form th:action="@{/leagues/{id}/delete(id=${league.leagueId})}" method="post"
+                      onsubmit="return confirm('이 리그를 삭제할까요?\n소속 시즌과 경기 기록도 모두 함께 삭제됩니다.');">
+                    <button type="submit" class="button danger">삭제</button>
+                </form>
+            </div>
+        </li>
+    </ul>
+</main>
+</body>
+</html>
