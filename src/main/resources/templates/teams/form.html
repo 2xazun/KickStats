@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${teamId} ? '팀 수정' : '팀 등록')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: nav}"></header>
+<main>
+    <div class="page-title">
+        <h1 th:text="${teamId} ? '팀 수정' : '팀 등록'"></h1>
+    </div>
+
+    <form class="form" method="post" th:object="${teamForm}"
+          th:action="${teamId} ? @{/teams/{id}(id=${teamId})} : @{/teams}">
+        <div class="field">
+            <label for="name">팀 이름</label>
+            <input type="text" th:field="*{name}" maxlength="50" required>
+            <p class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+        </div>
+        <div class="field">
+            <label for="city">연고지 (선택)</label>
+            <input type="text" th:field="*{city}" maxlength="50">
+            <p class="error" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></p>
+        </div>
+        <div class="field">
+            <label for="homeStadiumId">홈 경기장 (선택)</label>
+            <select th:field="*{homeStadiumId}">
+                <option value="">선택 안 함</option>
+                <option th:each="stadium : ${stadiums}" th:value="${stadium.stadiumId}" th:text="${stadium.name}"></option>
+            </select>
+            <p class="error" th:if="${#fields.hasErrors('homeStadiumId')}" th:errors="*{homeStadiumId}"></p>
+        </div>
+        <div class="field">
+            <label for="foundedYear">창단 연도 (선택)</label>
+            <input type="number" th:field="*{foundedYear}" min="1800" max="2100">
+            <p class="error" th:if="${#fields.hasErrors('foundedYear')}" th:errors="*{foundedYear}"></p>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="button primary">저장</button>
+            <a class="button" th:href="@{/teams}">취소</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

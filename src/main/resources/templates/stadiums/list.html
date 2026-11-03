@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('경기장')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: nav}"></header>
+<main>
+    <div class="page-title">
+        <h1>경기장</h1>
+        <a class="button primary" th:href="@{/stadiums/new}">경기장 등록</a>
+    </div>
+    <p th:replace="~{fragments/layout :: message}"></p>
+
+    <p th:if="${stadiums.isEmpty()}" class="empty">등록된 경기장이 없습니다.</p>
+    <ul th:unless="${stadiums.isEmpty()}" class="card-list">
+        <li th:each="stadium : ${stadiums}" class="card-row">
+            <div>
+                <p class="card-row-title" th:text="${stadium.name}"></p>
+                <p class="card-row-subtitle meta">
+                    <span th:if="${stadium.city}" th:text="${stadium.city}"></span>
+                    <span th:if="${stadium.capacity != null}"
+                          th:text="${#numbers.formatInteger(stadium.capacity, 1, 'COMMA')} + '석'"></span>
+                </p>
+            </div>
+            <div class="actions">
+                <a class="button" th:href="@{/stadiums/{id}/edit(id=${stadium.stadiumId})}">수정</a>
+                <form th:action="@{/stadiums/{id}/delete(id=${stadium.stadiumId})}" method="post"
+                      onsubmit="return confirm('이 경기장을 삭제할까요?\n이 경기장을 쓰는 팀과 경기에서는 경기장 정보가 비워집니다.');">
+                    <button type="submit" class="button danger">삭제</button>
+                </form>
+            </div>
+        </li>
+    </ul>
+</main>
+</body>
+</html>
